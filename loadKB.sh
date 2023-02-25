@@ -18,7 +18,7 @@ if [ -n "${BACKUPFILE}" ]; then
     
     # Restore from backup
     echo 'Restore KB from given backup'
-    # /var/lib/neo4j/bin/neo4j-admin load --from=/backup/${BACKUPFILE} --verbose --force    # if you want to wget the backup
+    # /var/lib/neo4j/bin/neo4j-admin load --from=./backup/${BACKUPFILE} --verbose --force    # if you want to wget the backup
     /var/lib/neo4j/bin/neo4j-admin load --from=/backup/${BACKUPFILE} --verbose --force
   fi
 fi

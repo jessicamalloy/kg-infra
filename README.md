@@ -7,10 +7,16 @@ To build the project, clone the project to your computer and run the following c
 docker build -t bds/kb-prod:standalone .
 ```
 
-To run the built Docker image:
+To run the built Docker image with the backup file pulled from the web:
 ```
-docker run -d -p:7474:7474 -p 7687:7687 -v $PWD/backup:/backup bds/kb-prod:standalone
+docker run -d -p:7474:7474 -p 7687:7687 bds/kb-prod:standalone
 ```
+
+To run the built Docker image with the backup file in `/backup/`:
+```
+docker run -d -p:7473:7474 -p 7687:7687 -v $PWD/backup:/backup bds/kb-prod:standalone
+```
+(You also need to comment/uncomment the right command in the `loadKB.sh` file for this to work)(this is a WIP)
 
 At startup, KB automatically loads the backup data and you can start exploring the knowledge graph through your browser.
 
