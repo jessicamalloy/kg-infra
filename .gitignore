@@ -1,0 +1,8 @@
+deploy/environments/*
+!deploy/environments/example
+
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.terraform.lock.hcl
