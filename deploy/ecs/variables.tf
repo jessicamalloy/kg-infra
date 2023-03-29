@@ -42,6 +42,13 @@ variable "application_port" {
   default     = 80
 }
 
+variable "bolt_port" {
+  description = "The port number the application in the container is using for Neo4j Bolt."
+  type        = number
+  default     = 7687
+}
+
+
 variable "env_vars" {
   description = "Environment variables"
   type        = list

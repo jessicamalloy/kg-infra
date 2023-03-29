@@ -27,6 +27,11 @@ resource "aws_ecs_task_definition" "task_def" {
           containerPort = var.application_port
           hostPort      = var.application_port
           protocol      = "tcp"
+        },
+        {
+          containerPort = var.bolt_port
+          hostPort      = var.bolt_port
+          protocol      = "tcp"
         }
       ]
 
@@ -63,7 +68,7 @@ resource "aws_ecs_service" "ecs" {
   task_definition = aws_ecs_task_definition.task_def.arn
   desired_count   = var.ecs_desired_task_count
   launch_type     = "FARGATE"
-  depends_on      = [aws_lb_listener.lb_listener]
+  depends_on      = [aws_lb_listener.lb_listener, aws_lb_listener.lb_listener2]
 
   /*
    * During deployment task definitions are updated with new images.  If task definition is not ignored

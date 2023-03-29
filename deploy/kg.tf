@@ -14,4 +14,5 @@ module "knowledge_graph_ecs" {
   vpc_public_subnets = module.knowledge_graph_vpc.public_subnets
   docker_image       = var.docker_image
   application_port   = 7474
+  bolt_port          = 7687
 }
