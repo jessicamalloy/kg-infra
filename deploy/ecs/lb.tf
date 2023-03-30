@@ -52,56 +52,56 @@ resource "aws_lb_listener" "lb_listener" {
   }
 }
 
-resource "aws_lb_target_group" "lb_target_group2" {
-  name        = "${var.project_name}-lb2-tg"
-  port        = var.bolt_port
-  protocol    = "HTTP"
-  vpc_id      = var.vpc_id
-  target_type = "ip"
+# resource "aws_lb_target_group" "lb_target_group2" {
+#   name        = "${var.project_name}-lb2-tg"
+#   port        = var.bolt_port
+#   protocol    = "TCP"
+#   vpc_id      = var.vpc_id
+#   target_type = "ip"
 
-  health_check {
-    healthy_threshold   = "5"
-    unhealthy_threshold = "2"
-    interval            = "30"
-    matcher             = "200"
-    path                = "/health"
-    port                = "traffic-port"
-    protocol            = "HTTP"
-    timeout             = "5"
-  }
+#   health_check {
+#     healthy_threshold   = "5"
+#     unhealthy_threshold = "2"
+#     interval            = "30"
+#     matcher             = "200"
+#     path                = "/health"
+#     port                = "traffic-port"
+#     protocol            = "TCP"
+#     timeout             = "5"
+#   }
   
-  tags = {
-    name        = "${var.project_name}-lb2-tg"
-    ProjectName = var.project_name
-  }
-}
+#   tags = {
+#     name        = "${var.project_name}-lb2-tg"
+#     ProjectName = var.project_name
+#   }
+# }
 
-resource "aws_lb" "lb2" {
-  name               = "${var.project_name}-lb2"
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [module.fargate_security_group.security_group_id]
-  subnets            = var.vpc_public_subnets
+# resource "aws_lb" "lb2" {
+#   name               = "${var.project_name}-lb2"
+#   internal           = false
+#   load_balancer_type = "application"
+#   security_groups    = [module.fargate_security_group.security_group_id]
+#   subnets            = var.vpc_public_subnets
 
-  tags = {
-    name        = "${var.project_name}-lb2"
-    ProjectName = var.project_name
-  }
-}
+#   tags = {
+#     name        = "${var.project_name}-lb2"
+#     ProjectName = var.project_name
+#   }
+# }
 
-resource "aws_lb_listener" "lb_listener2" {
-  load_balancer_arn = aws_lb.lb2.arn
-  port              = "443"
-  protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = aws_acm_certificate.cert.arn
+# resource "aws_lb_listener" "lb_listener2" {
+#   load_balancer_arn = aws_lb.lb2.arn
+#   port              = "443"
+#   protocol          = "HTTPS"
+#   ssl_policy        = "ELBSecurityPolicy-2016-08"
+#   certificate_arn   = aws_acm_certificate.cert.arn
   
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.lb_target_group2.arn
-  }
+#   default_action {
+#     type             = "forward"
+#     target_group_arn = aws_lb_target_group.lb_target_group2.arn
+#   }
 
-  tags = {
-    ProjectName = var.project_name
-  }
-}
+#   tags = {
+#     ProjectName = var.project_name
+#   }
+# }

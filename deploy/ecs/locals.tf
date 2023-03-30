@@ -8,14 +8,20 @@ locals {
         cidr_blocks      = "0.0.0.0/0"
       },
       {
-        from_port        = 443
-        to_port          = 443
+        from_port        = 7687
+        to_port          = 7687
         protocol         = "tcp"
         cidr_blocks      = "0.0.0.0/0"
       },
       {
-        from_port        = 7687
-        to_port          = 7687
+        from_port        = 7473
+        to_port          = 7473
+        protocol         = "tcp"
+        cidr_blocks      = "0.0.0.0/0"
+      },
+      {
+        from_port        = 443
+        to_port          = 443
         protocol         = "tcp"
         cidr_blocks      = "0.0.0.0/0"
       },
@@ -29,7 +35,7 @@ locals {
       }
     ]
     ingress_with_cidr_blocks = (
-      var.application_port != 80 && var.application_port != 443
+      var.application_port != 80 && var.application_port != 7687
       ? concat(local.ecs_default_ingress, local.ingress_on_application_port)
       : local.ecs_default_ingress
     )
