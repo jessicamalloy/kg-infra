@@ -1,6 +1,6 @@
 resource "aws_lb_target_group" "lb_target_group" {
   name        = "${var.project_name}-lb-tg"
-  port        = var.application_port
+  port        = var.application_port // 7474
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
   target_type = "ip"
@@ -10,7 +10,7 @@ resource "aws_lb_target_group" "lb_target_group" {
     unhealthy_threshold = "2"
     interval            = "30"
     matcher             = "200"
-    path                = "/health"
+    path                = "/"
     port                = "traffic-port"
     protocol            = "HTTP"
     timeout             = "5"
@@ -52,29 +52,29 @@ resource "aws_lb_listener" "lb_listener" {
   }
 }
 
-# resource "aws_lb_target_group" "lb_target_group2" {
-#   name        = "${var.project_name}-lb2-tg"
-#   port        = var.bolt_port
-#   protocol    = "TCP"
-#   vpc_id      = var.vpc_id
-#   target_type = "ip"
+resource "aws_lb_target_group" "lb_target_group2" {
+  name        = "${var.project_name}-lb2-tg"
+  port        = var.bolt_port // 7687
+  protocol    = "HTTP"
+  vpc_id      = var.vpc_id
+  target_type = "ip"
 
-#   health_check {
-#     healthy_threshold   = "5"
-#     unhealthy_threshold = "2"
-#     interval            = "30"
-#     matcher             = "200"
-#     path                = "/health"
-#     port                = "traffic-port"
-#     protocol            = "TCP"
-#     timeout             = "5"
-#   }
+  health_check {
+    healthy_threshold   = "5"
+    unhealthy_threshold = "2"
+    interval            = "30"
+    matcher             = "200"
+    path                = "/"
+    port                = var.application_port
+    protocol            = "HTTP"
+    timeout             = "5"
+  }
   
-#   tags = {
-#     name        = "${var.project_name}-lb2-tg"
-#     ProjectName = var.project_name
-#   }
-# }
+  tags = {
+    name        = "${var.project_name}-lb2-tg"
+    ProjectName = var.project_name
+  }
+}
 
 # resource "aws_lb" "lb2" {
 #   name               = "${var.project_name}-lb2"
@@ -89,19 +89,19 @@ resource "aws_lb_listener" "lb_listener" {
 #   }
 # }
 
-# resource "aws_lb_listener" "lb_listener2" {
-#   load_balancer_arn = aws_lb.lb2.arn
-#   port              = "443"
-#   protocol          = "HTTPS"
-#   ssl_policy        = "ELBSecurityPolicy-2016-08"
-#   certificate_arn   = aws_acm_certificate.cert.arn
+resource "aws_lb_listener" "lb_listener2" {
+  load_balancer_arn = aws_lb.lb.arn
+  port              = var.bolt_port
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = aws_acm_certificate.cert.arn
   
-#   default_action {
-#     type             = "forward"
-#     target_group_arn = aws_lb_target_group.lb_target_group2.arn
-#   }
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.lb_target_group2.arn
+  }
 
-#   tags = {
-#     ProjectName = var.project_name
-#   }
-# }
+  tags = {
+    ProjectName = var.project_name
+  }
+}

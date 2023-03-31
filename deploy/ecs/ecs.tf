@@ -68,7 +68,7 @@ resource "aws_ecs_service" "ecs" {
   task_definition = aws_ecs_task_definition.task_def.arn
   desired_count   = var.ecs_desired_task_count
   launch_type     = "FARGATE"
-  depends_on      = [aws_lb_listener.lb_listener]//, aws_lb_listener.lb_listener2]
+  depends_on      = [aws_lb_listener.lb_listener, aws_lb_listener.lb_listener2]
 
   /*
    * During deployment task definitions are updated with new images.  If task definition is not ignored
@@ -88,6 +88,12 @@ resource "aws_ecs_service" "ecs" {
     target_group_arn = aws_lb_target_group.lb_target_group.arn
     container_name   = local.ecs_container_name
     container_port   = var.application_port
+  }
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.lb_target_group2.arn
+    container_name   = local.ecs_container_name
+    container_port   = var.bolt_port
   }
 
   tags = {
